@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Vladify.Domain\Vladify.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
