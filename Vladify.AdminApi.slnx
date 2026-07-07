@@ -1,3 +1,6 @@
 <Solution>
   <Project Path="Vladify.AdminApi.csproj" />
+  <Project Path="Vladify.ApplicationLayer/Vladify.ApplicationLayer.csproj" Id="6ddbcea7-e069-48a3-afba-865b9c71b49a" />
+  <Project Path="Vladify.Domain/Vladify.Domain.csproj" Id="aa65125a-17c1-46cd-ad89-d5cf0d35c84d" />
+  <Project Path="Vladify.InfrastructureLayer/Vladify.InfrastructureLayer.csproj" Id="a7f2a522-1120-4a23-8dcb-ca292b2b5005" />
 </Solution>
