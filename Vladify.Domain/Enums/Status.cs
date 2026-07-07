@@ -1,8 +1,8 @@
 ﻿namespace Vladify.Domain.Enums;
 
-public enum Status
+public enum ModerationStatus
 {
-    Pending,
-    Approved,
-    Rejected
+    Pending = 0,
+    Approved = 1,
+    Rejected = 2
 }

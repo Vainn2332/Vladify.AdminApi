@@ -10,7 +10,7 @@ public class ModerationTask
 
     public Guid AssignedModeratorId { get; set; }
 
-    public Status Status { get; set; }
+    public ModerationStatus Status { get; set; }
 
     public string? Message { get; set; }
 
