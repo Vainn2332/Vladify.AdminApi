@@ -14,9 +14,4 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="Vladify.ApplicationLayer\Vladify.ApplicationLayer.csproj" />
-    <ProjectReference Include="Vladify.InfrastructureLayer\Vladify.InfrastructureLayer.csproj" />
-  </ItemGroup>
-
 </Project>
