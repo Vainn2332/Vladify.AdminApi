@@ -47,7 +47,7 @@ public static class ApiExtensions
             {
                 options.AddPolicy("AdminOrModerator", policy =>
                 {
-                    policy.RequireClaim("https://my-app.com/roles", "Admin", "Moderator");
+                    policy.RequireClaim("https://vladify.com/roles", "Admin", "Moderator");
                 });
             });
 
