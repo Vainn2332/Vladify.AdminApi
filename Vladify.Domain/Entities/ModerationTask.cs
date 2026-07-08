@@ -8,7 +8,7 @@ public class ModerationTask
 
     public Guid SongId { get; set; }
 
-    public Guid AssignedModeratorId { get; set; }
+    public Guid? AssignedModeratorId { get; set; }
 
     public ModerationStatus Status { get; set; }
 
