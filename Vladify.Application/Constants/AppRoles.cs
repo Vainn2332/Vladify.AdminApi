@@ -1,6 +1,6 @@
 ﻿namespace Vladify.Application.Constants;
 
-public static class Roles
+public static class AppRoles
 {
     public const string Admin = "Admin";
 

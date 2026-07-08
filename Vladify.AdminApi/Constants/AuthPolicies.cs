@@ -1,6 +1,6 @@
 ﻿namespace Vladify.AdminApi.Constants;
 
-public class AuthPolicies
+public static class AuthPolicies
 {
     public const string AdminOrModerator = "AdminOrModerator";
 }

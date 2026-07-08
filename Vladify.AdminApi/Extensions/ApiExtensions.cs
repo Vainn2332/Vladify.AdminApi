@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Vladify.AdminApi.Constants;
+using Vladify.Application.Constants;
 using Vladify.Application.Options;
 
 namespace Vladify.AdminApi.Extensions;
@@ -45,9 +47,9 @@ public static class ApiExtensions
         {
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminOrModerator", policy =>
+                options.AddPolicy(AuthPolicies.AdminOrModerator, policy =>
                 {
-                    policy.RequireClaim("https://vladify.com/roles", "Admin", "Moderator");
+                    policy.RequireClaim(JwtClaims.Roles, AppRoles.Admin, AppRoles.Moderator);
                 });
             });
 
