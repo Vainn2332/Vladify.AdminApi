@@ -7,7 +7,13 @@ public static class DiExtensions
 {
     extension(IServiceCollection services)
     {
-        public IServiceCollection AddOptions()
+        public IServiceCollection AddApplicationServices()
+        {
+            return services
+                .ConfigureOptions();
+        }
+
+        public IServiceCollection ConfigureOptions()
         {
             services
                 .AddOptions<Auth0Options>()

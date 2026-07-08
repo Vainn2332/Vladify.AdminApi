@@ -9,7 +9,7 @@ public static class ApiExtensions
 {
     extension(IServiceCollection services)
     {
-        public IServiceCollection AddAppServices()
+        public IServiceCollection AddApiServices()
         {
             return services
                 .AddJwtBasedAuthentication()

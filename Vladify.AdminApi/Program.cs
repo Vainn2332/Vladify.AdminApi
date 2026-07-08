@@ -1,4 +1,5 @@
 using Vladify.AdminApi.Extensions;
+using Vladify.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +7,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
 
-builder.Services.AddAppServices();
+builder.Services.AddApiServices();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
