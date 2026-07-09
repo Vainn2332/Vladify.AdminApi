@@ -17,7 +17,7 @@ public static class DiExtensions
 
         public IServiceCollection AddPostgresDb(IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("ApplicationDbContext")
+            var connectionString = configuration.GetConnectionString("AdminApiDb")
                 ?? throw new NotFoundException("Connection string for dbContext not found!");
 
             services.AddDbContext<ApplicationDbContext>(options =>
