@@ -1,4 +1,5 @@
-﻿using Vladify.Infrastructure.Extensions;
+﻿using Microsoft.IdentityModel.Protocols.Configuration;
+using Vladify.Infrastructure.Extensions;
 
 namespace Vladify.AdminApi.Extensions;
 
@@ -9,7 +10,7 @@ public static class WebAppBuilderExtensions
         public WebApplicationBuilder ConfigureInfrastructure()
         {
             var connectionString = builder.Configuration.GetConnectionString("AdminApiDb")
-                ?? throw new InvalidOperationException("Connection string for dbContext not found!");
+                ?? throw new InvalidConfigurationException("Failed to get connection string for dbContext!");
 
             builder.Services.AddInfrastructure(connectionString);
 
