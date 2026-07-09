@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".github/workflows/ci.yml" />
+  </Folder>
   <Project Path="Vladify.AdminApi/Vladify.AdminApi.csproj" />
   <Project Path="Vladify.Application/Vladify.Application.csproj" Id="91352d45-6799-492d-80cb-8366649844a4" />
   <Project Path="Vladify.Domain/Vladify.Domain.csproj" Id="6de0fedd-2ac0-4517-86fa-ef7d60b05dfb" />
