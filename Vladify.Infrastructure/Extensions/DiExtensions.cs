@@ -15,7 +15,6 @@ public static class DiExtensions
 
         public IServiceCollection AddPostgresDb(string connectionString)
         {
-
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseNpgsql(connectionString);
