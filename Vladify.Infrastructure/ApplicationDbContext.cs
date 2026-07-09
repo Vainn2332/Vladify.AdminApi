@@ -11,7 +11,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new ModerationTaskConfiguration());
+    }
 
-        base.OnModelCreating(modelBuilder);
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder
+            .Properties<Enum>()
+            .HaveConversion<string>();
     }
 }
