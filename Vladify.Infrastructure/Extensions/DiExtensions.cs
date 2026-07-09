@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Vladify.Application.Exceptions;
 
 namespace Vladify.Infrastructure.Extensions;
 
@@ -9,16 +7,14 @@ public static class DiExtensions
 {
     extension(IServiceCollection services)
     {
-        public IServiceCollection AddInfrastructure(IConfiguration configuration)
+        public IServiceCollection AddInfrastructure(string connectionString)
         {
             return services
-                .AddPostgresDb(configuration);
+                .AddPostgresDb(connectionString);
         }
 
-        public IServiceCollection AddPostgresDb(IConfiguration configuration)
+        public IServiceCollection AddPostgresDb(string connectionString)
         {
-            var connectionString = configuration.GetConnectionString("AdminApiDb")
-                ?? throw new NotFoundException("Connection string for dbContext not found!");
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
