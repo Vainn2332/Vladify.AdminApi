@@ -12,6 +12,6 @@ public class ModerationTaskConfiguration : IEntityTypeConfiguration<ModerationTa
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Status).HasConversion<string>();
         builder.HasIndex(p => p.SongId).IsUnique();
-        builder.Property(p => p.Message).HasMaxLength(DomainConstants.ModerationTask.MaxMessageLength);
+        builder.Property(p => p.Message).HasMaxLength(ModerationTaskConstants.MaxMessageLength);
     }
 }
