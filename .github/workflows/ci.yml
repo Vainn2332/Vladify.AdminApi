@@ -41,7 +41,7 @@ jobs:
         dotnet sonarscanner begin
         /k:"Vainn2332_Vladify.AdminApi"
         /o:"vainn2332"
-        /d:sonar.token="${{secrets.SONAR_TOKEN}}"
+        /d:sonar.token="$SONAR_TOKEN"
         /d:sonar.host.url="https://sonarcloud.io"
         /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml"
 
