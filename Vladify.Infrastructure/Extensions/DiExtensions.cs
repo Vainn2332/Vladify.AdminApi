@@ -27,6 +27,5 @@ public static class DiExtensions
 
             return services;
         }
-
     }
 }
