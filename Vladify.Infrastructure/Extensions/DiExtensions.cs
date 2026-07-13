@@ -3,7 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using Polly;
 using Polly.Retry;
+using Vladify.Application.Interfaces;
 using Vladify.Infrastructure.Constants;
+using Vladify.Infrastructure.Repositories;
 
 namespace Vladify.Infrastructure.Extensions;
 
@@ -15,7 +17,15 @@ public static class DiExtensions
         {
             return services
                 .AddPolly()
+                .AddRepositories()
                 .AddPostgresDb(connectionString);
+        }
+
+        public IServiceCollection AddRepositories()
+        {
+            services.AddScoped<IModerationTaskRepository, ModerationTaskRepository>();
+
+            return services;
         }
 
         public IServiceCollection AddPostgresDb(string connectionString)
