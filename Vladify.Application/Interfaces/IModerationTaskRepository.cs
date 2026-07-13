@@ -7,11 +7,11 @@ public interface IModerationTaskRepository
 {
     public Task<ModerationTask> CreateAsync(ModerationTask task, CancellationToken cancellationToken);
 
-    public List<ModerationTask> GetAllAsync(PaginationFilter paginationFilter, CancellationToken cancellationToken);
+    public Task<List<ModerationTask>> GetAllAsync(PaginationFilter paginationFilter, CancellationToken cancellationToken);
 
-    public ModerationTask GetAsync(Guid id, CancellationToken cancellationToken);
+    public Task<ModerationTask> GetAsync(Guid id, CancellationToken cancellationToken);
 
-    public ModerationTask UpdateAsync(ModerationTask task, CancellationToken cancellationToken);
+    public Task<ModerationTask> UpdateAsync(ModerationTask task, CancellationToken cancellationToken);
 
-    public ModerationTask DeleteAsync(Guid id, CancellationToken cancellationToken);
+    public Task<ModerationTask> DeleteAsync(Guid id, CancellationToken cancellationToken);
 }
