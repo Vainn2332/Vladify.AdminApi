@@ -9,9 +9,9 @@ public interface IModerationTaskRepository
 
     public Task<List<ModerationTask>> GetAllAsync(PaginationFilter paginationFilter, CancellationToken cancellationToken);
 
-    public Task<ModerationTask> GetAsync(Guid id, CancellationToken cancellationToken);
+    public Task<ModerationTask?> GetAsync(Guid id, CancellationToken cancellationToken);
 
     public Task<ModerationTask> UpdateAsync(ModerationTask task, CancellationToken cancellationToken);
 
-    public Task<ModerationTask> DeleteAsync(Guid id, CancellationToken cancellationToken);
+    public Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 }
