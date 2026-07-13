@@ -1,13 +1,18 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Polly;
+using Polly.Registry;
 using Vladify.Application.Interfaces;
 using Vladify.Application.Models;
 using Vladify.Domain.Entities;
+using Vladify.Infrastructure.Constants;
 
 namespace Vladify.Infrastructure.Repositories;
 
-public class ModerationTaskRepository(ApplicationDbContext context) : IModerationTaskRepository
+public class ModerationTaskRepository(ApplicationDbContext context, ResiliencePipelineProvider<string> pipelineProvider) : IModerationTaskRepository
 {
+    private readonly ResiliencePipeline _pipeline = pipelineProvider.GetPipeline(PollyPipelineConstants.DbRetryPipelineName);
+
     public async Task<ModerationTask> CreateAsync(ModerationTask task, CancellationToken cancellationToken)
     {
         context.ModerationTasks.Add(task);
@@ -19,55 +24,67 @@ public class ModerationTaskRepository(ApplicationDbContext context) : IModeratio
 
     public async Task<List<ModerationTask>> GetAllAsync(PaginationFilter paginationFilter, CancellationToken cancellationToken)
     {
-        var connection = context.Database.GetDbConnection();
+        return await _pipeline.ExecuteAsync(async pollyCancellationToken =>
+        {
+            var connection = context.Database.GetDbConnection();
+            int offset = (paginationFilter.PageNumber - 1) * paginationFilter.PageSize;
 
-        int offset = (paginationFilter.PageNumber - 1) * paginationFilter.PageSize;
-        var query = """
-            SELECT * FROM "ModerationTasks"
-            ORDER BY "Id"
-            LIMIT @Limit OFFSET @Offset
-            """;
+            var query = """
+                SELECT * FROM "ModerationTasks"
+                ORDER BY "Id"
+                LIMIT @Limit OFFSET @Offset
+                """;
 
-        var command = new CommandDefinition(
-            query,
-            new { Limit = paginationFilter.PageSize, Offset = offset },
-            cancellationToken: cancellationToken);
+            var command = new CommandDefinition(
+                query,
+                new { Limit = paginationFilter.PageSize, Offset = offset },
+                cancellationToken: pollyCancellationToken);
 
-        var result = await connection.QueryAsync<ModerationTask>(command);
+            var result = await connection.QueryAsync<ModerationTask>(command);
 
-        return result.AsList();
+            return result.AsList();
+        }, cancellationToken);
     }
 
-    public Task<ModerationTask?> GetAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ModerationTask?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        var connection = context.Database.GetDbConnection();
+        return await _pipeline.ExecuteAsync(async pollyCancellationToken =>
+        {
+            var connection = context.Database.GetDbConnection();
 
-        var query = """
+            var query = """
             SELECT * FROM "ModerationTasks"
-            Where "Id" =@Id
+            WHERE "Id" =@Id
             """;
 
-        var command = new CommandDefinition(
-            query,
-            new { Id = id },
-            cancellationToken: cancellationToken);
+            var command = new CommandDefinition(
+                query,
+                new { Id = id },
+                cancellationToken: pollyCancellationToken);
 
-        return connection.QueryFirstOrDefaultAsync<ModerationTask>(command);
+            return await connection.QueryFirstOrDefaultAsync<ModerationTask?>(command);
+        }, cancellationToken);
     }
 
     public async Task<ModerationTask> UpdateAsync(ModerationTask task, CancellationToken cancellationToken)
     {
-        context.ModerationTasks.Update(task);
+        return await _pipeline.ExecuteAsync(async pollyCancellationToken =>
+        {
+            context.ModerationTasks.Update(task);
 
-        await context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(pollyCancellationToken);
 
-        return task;
+            return task;
+        }, cancellationToken);
     }
 
-    public Task DeleteAsync(ModerationTask task, CancellationToken cancellationToken)
+    public async Task DeleteAsync(ModerationTask task, CancellationToken cancellationToken)
     {
-        context.ModerationTasks.Remove(task);
+        await _pipeline.ExecuteAsync(async pollyCancellationToken =>
+        {
+            context.ModerationTasks.Remove(task);
 
-        return context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(pollyCancellationToken);
+        }, cancellationToken);
     }
 }
