@@ -27,7 +27,7 @@ public class ModerationTaskRepository(ApplicationDbContext context, ResiliencePi
         return await _pipeline.ExecuteAsync(async pollyCancellationToken =>
         {
             var connection = context.Database.GetDbConnection();
-            int offset = (paginationFilter.PageNumber - 1) * paginationFilter.PageSize;
+            var offset = (paginationFilter.PageNumber - 1) * paginationFilter.PageSize;
 
             var query = """
                 SELECT * FROM "ModerationTasks"
