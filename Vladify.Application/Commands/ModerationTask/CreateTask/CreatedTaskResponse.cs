@@ -1,6 +1,6 @@
 ﻿using Vladify.Domain.Enums;
 
-namespace Vladify.Application.Commands.CreateTask;
+namespace Vladify.Application.Commands.ModerationTask.CreateTask;
 
 public record CreatedTaskResponse
 {

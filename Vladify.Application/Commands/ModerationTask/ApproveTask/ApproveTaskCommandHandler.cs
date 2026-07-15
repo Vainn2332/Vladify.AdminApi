@@ -5,7 +5,7 @@ using Vladify.Application.Exceptions;
 using Vladify.Application.Interfaces;
 using Vladify.Domain.Enums;
 
-namespace Vladify.Application.Commands.ApproveTask;
+namespace Vladify.Application.Commands.ModerationTask.ApproveTask;
 
 public class ApproveTaskCommandHandler(IModerationTaskRepository repository, IMapper mapper) : IRequestHandler<ApproveTaskCommand, ApprovedTaskResponse>
 {

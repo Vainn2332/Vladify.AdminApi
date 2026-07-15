@@ -3,7 +3,7 @@ using Vladify.Application.Constants;
 using Vladify.Application.Exceptions;
 using Vladify.Application.Interfaces;
 
-namespace Vladify.Application.Commands.AssignTask;
+namespace Vladify.Application.Commands.ModerationTask.AssignTask;
 
 public class AssignTaskCommandHandler(IModerationTaskRepository repository) : IRequestHandler<AssignTaskCommand>
 {
