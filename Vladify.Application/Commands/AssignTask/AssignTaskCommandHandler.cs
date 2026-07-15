@@ -11,6 +11,10 @@ public class AssignTaskCommandHandler(IModerationTaskRepository repository) : IR
     {
         var task = await repository.GetAsync(request.TaskId, cancellationToken)
             ?? throw new NotFoundException(ErrorMessages.TaskNotFoundById);
+        if (task.AssignedModeratorId != request.ModeratorId)
+        {
+            throw new TaskAssignedToDifferentModeratorException(ErrorMessages.TaskAssignedToDifferentModerator);
+        }
 
         task.AssignedModeratorId = request.ModeratorId;
 
