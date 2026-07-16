@@ -29,7 +29,7 @@ public class ModerationTaskRepository(ApplicationDbContext context, ResiliencePi
 
             var query = """
             UPDATE "ModerationTasks"
-            SET "ModeratorId" = @ModeratorId,
+            SET "ModeratorId" = @ModeratorId
             WHERE "Id" = (
                 SELECT "Id" 
                 FROM "ModerationTasks" 
