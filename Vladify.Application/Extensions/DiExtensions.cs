@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Vladify.Application.Commands.ModerationTasks.ApproveTask;
 using Vladify.Application.MapperProfiles;
 using Vladify.Application.Options;
 
@@ -12,6 +13,7 @@ public static class DiExtensions
         {
             return services
                 .AddAutoMapper()
+                .AddMediatR()
                 .ConfigureOptions();
         }
 
@@ -24,6 +26,15 @@ public static class DiExtensions
                 .ValidateOnStart();
 
             return services;
+        }
+
+        public IServiceCollection AddMediatR()
+        {
+            return services
+                .AddMediatR(cfg =>
+                {
+                    cfg.RegisterServicesFromAssembly(typeof(ApproveTaskCommand).Assembly);
+                });
         }
 
         public IServiceCollection AddAutoMapper()
