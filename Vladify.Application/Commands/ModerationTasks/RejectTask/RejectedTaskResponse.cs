@@ -1,3 +1,3 @@
-﻿namespace Vladify.Application.Commands.ModerationTask.RejectTask;
+﻿namespace Vladify.Application.Commands.ModerationTasks.RejectTask;
 
 public record RejectedTaskResponse(Guid Id, DateTimeOffset ResolvedAt);

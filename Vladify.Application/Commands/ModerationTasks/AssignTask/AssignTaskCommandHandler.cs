@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Vladify.Application.Interfaces;
 
-namespace Vladify.Application.Commands.ModerationTask.AssignTask;
+namespace Vladify.Application.Commands.ModerationTasks.AssignTask;
 
 public class AssignTaskCommandHandler(IModerationTaskRepository repository) : IRequestHandler<AssignTaskCommand, Guid?>
 {

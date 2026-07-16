@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using Vladify.Application.Interfaces;
+using Vladify.Domain.Entities;
 using Vladify.Domain.Enums;
 
-namespace Vladify.Application.Commands.ModerationTask.CreateTask;
+namespace Vladify.Application.Commands.ModerationTasks.CreateTask;
 
 public class CreateTaskCommandHandler(IModerationTaskRepository repository, IMapper mapper) : IRequestHandler<CreateTaskCommand, CreatedTaskResponse>
 {

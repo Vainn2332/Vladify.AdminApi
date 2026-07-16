@@ -2,7 +2,7 @@
 using AutoFixture.AutoMoq;
 using FluentAssertions;
 using Moq;
-using Vladify.Application.Commands.ModerationTask.AssignTask;
+using Vladify.Application.Commands.ModerationTasks.AssignTask;
 using Vladify.Application.Interfaces;
 
 namespace Vladify.Tests.UnitTests.ModerationTasks.Commands.AssignTask;

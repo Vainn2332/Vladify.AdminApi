@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Vladify.Application.Commands.ModerationTask.CreateTask;
+using Vladify.Application.Commands.ModerationTasks.CreateTask;
 using Vladify.Domain.Entities;
 
 namespace Vladify.Application.MapperProfiles;

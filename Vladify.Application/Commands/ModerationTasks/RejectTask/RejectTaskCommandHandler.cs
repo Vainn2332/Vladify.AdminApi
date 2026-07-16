@@ -5,7 +5,7 @@ using Vladify.Application.Exceptions;
 using Vladify.Application.Interfaces;
 using Vladify.Domain.Enums;
 
-namespace Vladify.Application.Commands.ModerationTask.RejectTask;
+namespace Vladify.Application.Commands.ModerationTasks.RejectTask;
 
 public class RejectTaskCommandHandler(IModerationTaskRepository repository, IMapper mapper) : IRequestHandler<RejectTaskCommand, RejectedTaskResponse>
 {
