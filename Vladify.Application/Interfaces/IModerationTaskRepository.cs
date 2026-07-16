@@ -1,5 +1,4 @@
-﻿using Vladify.Application.Models;
-using Vladify.Domain.Entities;
+﻿using Vladify.Domain.Entities;
 
 namespace Vladify.Application.Interfaces;
 
@@ -7,7 +6,7 @@ public interface IModerationTaskRepository
 {
     public Task<ModerationTask> CreateAsync(ModerationTask task, CancellationToken cancellationToken);
 
-    public Task<List<ModerationTask>> GetAllAsync(PaginationFilter paginationFilter, CancellationToken cancellationToken);
+    public Task<Guid?> ClaimNextPendingTaskAsync(Guid moderatorId, CancellationToken cancellationToken);
 
     public Task<ModerationTask?> GetAsync(Guid id, CancellationToken cancellationToken);
 
