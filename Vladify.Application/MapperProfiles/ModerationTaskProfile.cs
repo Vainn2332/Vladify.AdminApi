@@ -14,6 +14,7 @@ public class ModerationTaskProfile : Profile
             .ForMember(dest => dest.Status, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
 
-        CreateMap<CreatedTaskResponse, ModerationTask>();
+        CreateMap<CreatedTaskResponse, ModerationTask>()
+            .ReverseMap();
     }
 }
