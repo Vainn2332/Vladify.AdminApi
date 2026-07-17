@@ -6,4 +6,5 @@
   <Project Path="Vladify.Application/Vladify.Application.csproj" Id="91352d45-6799-492d-80cb-8366649844a4" />
   <Project Path="Vladify.Domain/Vladify.Domain.csproj" Id="6de0fedd-2ac0-4517-86fa-ef7d60b05dfb" />
   <Project Path="Vladify.Infrastructure/Vladify.Infrastructure.csproj" Id="74a66022-a9ee-4a71-8ffe-b0641c33748c" />
+  <Project Path="Vladify.Tests/Vladify.Tests.csproj" Id="62454c06-e072-4511-8c85-0976bc679b22" />
 </Solution>
