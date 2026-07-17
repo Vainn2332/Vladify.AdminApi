@@ -108,7 +108,7 @@ public class ModerationTaskRepository(ApplicationDbContext context, ResiliencePi
 
             var command = new CommandDefinition(
                 query,
-                new { Id = moderatorId },
+                new { ModeratorId = moderatorId },
                 cancellationToken: pollyCancellationToken);
 
             return await connection.QueryFirstOrDefaultAsync<bool>(command);
