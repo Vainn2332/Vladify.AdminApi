@@ -29,11 +29,11 @@ public class ModerationTaskRepository(ApplicationDbContext context, ResiliencePi
 
             var query = """
             UPDATE "ModerationTasks"
-            SET "ModeratorId" = @ModeratorId
+            SET "AssignedModeratorId" = @ModeratorId
             WHERE "Id" = (
                 SELECT "Id" 
                 FROM "ModerationTasks" 
-                WHERE "ModeratorId" IS NULL AND "Status" = 'Pending' 
+                WHERE "AssignedModeratorId" IS NULL AND "Status" = 'Pending' 
                 ORDER BY "CreatedAt" ASC 
                 LIMIT 1 
                 FOR UPDATE SKIP LOCKED
@@ -90,6 +90,29 @@ public class ModerationTaskRepository(ApplicationDbContext context, ResiliencePi
             context.ModerationTasks.Remove(task);
 
             await context.SaveChangesAsync(pollyCancellationToken);
+        }, cancellationToken);
+    }
+
+    public async Task<bool> HasActiveTaskAsync(Guid moderatorId, CancellationToken cancellationToken)
+    {
+        return await _pipeline.ExecuteAsync(async pollyCancellationToken =>
+        {
+            var connection = context.Database.GetDbConnection();
+
+            var query = """
+                SELECT EXISTS (
+                SELECT 1 
+                FROM "ModerationTasks" 
+                WHERE "AssignedModeratorId" = @ModeratorId );
+            """;
+
+            var command = new CommandDefinition(
+                query,
+                new { Id = moderatorId },
+                cancellationToken: pollyCancellationToken);
+
+            return await connection.QueryFirstOrDefaultAsync<bool>(command);
+
         }, cancellationToken);
     }
 }

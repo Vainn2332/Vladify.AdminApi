@@ -13,4 +13,6 @@ public interface IModerationTaskRepository
     public Task<ModerationTask> UpdateAsync(ModerationTask task, CancellationToken cancellationToken);
 
     public Task DeleteAsync(ModerationTask task, CancellationToken cancellationToken);
+
+    Task<bool> HasActiveTaskAsync(Guid moderatorId, CancellationToken cancellationToken);
 }
