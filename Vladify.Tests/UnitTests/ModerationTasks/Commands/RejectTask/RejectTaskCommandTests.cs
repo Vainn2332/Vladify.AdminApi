@@ -103,4 +103,25 @@ public class RejectTaskCommandTests
 
         _repositoryMock.Verify(repo => repo.UpdateAsync(It.IsAny<ModerationTask>(), It.IsAny<CancellationToken>()), Times.Never);
     }
+
+    [Fact]
+    public async Task Handle_ShouldThrowTaskNotClaimedException_WhenTaskHasNoAssignedModerator()
+    {
+        var command = _fixture.Create<RejectTaskCommand>();
+
+        var existingTask = _fixture.Build<ModerationTask>()
+            .With(t => t.Id, command.TaskId)
+            .With(t => t.AssignedModeratorId, (Guid?)null)
+            .Create();
+
+        _repositoryMock
+            .Setup(repo => repo.GetAsync(command.TaskId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(existingTask);
+
+        var act = () => _handler.Handle(command, CancellationToken.None);
+
+        await act.Should().ThrowAsync<TaskNotClaimedException>();
+
+        _repositoryMock.Verify(repo => repo.UpdateAsync(It.IsAny<ModerationTask>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
 }

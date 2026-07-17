@@ -13,6 +13,10 @@ public class ApproveTaskCommandHandler(IModerationTaskRepository repository, IMa
     {
         var task = await repository.GetAsync(request.TaskId, cancellationToken)
             ?? throw new NotFoundException(ErrorMessages.TaskNotFoundById);
+        if (task.AssignedModeratorId is null)
+        {
+            throw new TaskNotClaimedException(ErrorMessages.TaskNotClaimed);
+        }
         if (task.AssignedModeratorId != request.ModeratorId)
         {
             throw new TaskAssignedToDifferentModeratorException(ErrorMessages.TaskAssignedToDifferentModerator);
