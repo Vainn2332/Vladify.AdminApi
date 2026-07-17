@@ -3,6 +3,7 @@ using AutoFixture.AutoMoq;
 using FluentAssertions;
 using Moq;
 using Vladify.Application.Commands.ModerationTasks.AssignTask;
+using Vladify.Application.Exceptions;
 using Vladify.Application.Interfaces;
 
 namespace Vladify.Tests.UnitTests.ModerationTasks.Commands.AssignTask;
@@ -52,5 +53,21 @@ public class AssignTaskCommandTests
         result.Should().BeNull();
 
         _repositoryMock.Verify(repo => repo.ClaimNextPendingTaskAsync(command.ModeratorId, It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task Handle_ShouldThrowAlreadyHasActiveTaskException_WhenModeratorAlreadyHasActiveTask()
+    {
+        var command = _fixture.Create<AssignTaskCommand>();
+
+        _repositoryMock
+            .Setup(repo => repo.HasActiveTaskAsync(command.ModeratorId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
+        var act = () => _handler.Handle(command, CancellationToken.None);
+
+        await act.Should().ThrowAsync<AlreadyHasActiveTaskException>();
+
+        _repositoryMock.Verify(repo => repo.ClaimNextPendingTaskAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 }
