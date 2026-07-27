@@ -2,5 +2,5 @@
 
 public static class JwtClaims
 {
-    public const string Roles = "https://vladify.com/roles";
+    public const string Roles = "https://Vladify.com/roles";
 }
