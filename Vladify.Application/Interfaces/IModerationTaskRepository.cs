@@ -6,7 +6,7 @@ public interface IModerationTaskRepository
 {
     public Task<ModerationTask> CreateAsync(ModerationTask task, CancellationToken cancellationToken);
 
-    public Task<Guid?> ClaimNextPendingTaskAsync(Guid moderatorId, CancellationToken cancellationToken);
+    public Task<Guid?> ClaimNextPendingTaskAsync(string moderatorId, CancellationToken cancellationToken);
 
     public Task<ModerationTask?> GetAsync(Guid id, CancellationToken cancellationToken);
 
@@ -14,5 +14,5 @@ public interface IModerationTaskRepository
 
     public Task DeleteAsync(ModerationTask task, CancellationToken cancellationToken);
 
-    Task<bool> HasActiveTaskAsync(Guid moderatorId, CancellationToken cancellationToken);
+    Task<bool> HasActiveTaskAsync(string moderatorId, CancellationToken cancellationToken);
 }

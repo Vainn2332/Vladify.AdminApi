@@ -2,4 +2,4 @@
 
 namespace Vladify.Application.Commands.ModerationTasks.AssignTask;
 
-public record AssignTaskCommand(Guid ModeratorId) : IRequest<Guid?>;
+public record AssignTaskCommand(string ModeratorId) : IRequest<Guid?>;
