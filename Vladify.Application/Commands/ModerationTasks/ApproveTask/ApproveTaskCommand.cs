@@ -2,4 +2,4 @@
 
 namespace Vladify.Application.Commands.ModerationTasks.ApproveTask;
 
-public record ApproveTaskCommand(Guid TaskId, Guid ModeratorId) : IRequest<ApprovedTaskResponse>;
+public record ApproveTaskCommand(Guid TaskId, string ModeratorId) : IRequest<ApprovedTaskResponse>;

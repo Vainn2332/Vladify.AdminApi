@@ -21,7 +21,7 @@ public class ModerationTaskRepository(ApplicationDbContext context, ResiliencePi
         return task;
     }
 
-    public async Task<Guid?> ClaimNextPendingTaskAsync(Guid moderatorId, CancellationToken cancellationToken)
+    public async Task<Guid?> ClaimNextPendingTaskAsync(string moderatorId, CancellationToken cancellationToken)
     {
         return await _pipeline.ExecuteAsync(async pollyCancellationToken =>
         {
@@ -93,7 +93,7 @@ public class ModerationTaskRepository(ApplicationDbContext context, ResiliencePi
         }, cancellationToken);
     }
 
-    public async Task<bool> HasActiveTaskAsync(Guid moderatorId, CancellationToken cancellationToken)
+    public async Task<bool> HasActiveTaskAsync(string moderatorId, CancellationToken cancellationToken)
     {
         return await _pipeline.ExecuteAsync(async pollyCancellationToken =>
         {
