@@ -68,6 +68,6 @@ public class AssignTaskCommandTests
 
         await act.Should().ThrowAsync<AlreadyHasActiveTaskException>();
 
-        _repositoryMock.Verify(repo => repo.ClaimNextPendingTaskAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+        _repositoryMock.Verify(repo => repo.ClaimNextPendingTaskAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 }

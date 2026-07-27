@@ -86,7 +86,7 @@ public class RejectTaskCommandTests
     public async Task Handle_ShouldThrowTaskAssignedToDifferentModeratorException_WhenTaskIsAssignedToAnotherModerator()
     {
         var command = _fixture.Create<RejectTaskCommand>();
-        var differentModeratorId = _fixture.Create<Guid>();
+        var differentModeratorId = _fixture.Create<string>();
 
         var existingTask = _fixture.Build<ModerationTask>()
             .With(t => t.Id, command.TaskId)
@@ -111,7 +111,7 @@ public class RejectTaskCommandTests
 
         var existingTask = _fixture.Build<ModerationTask>()
             .With(t => t.Id, command.TaskId)
-            .With(t => t.AssignedModeratorId, (Guid?)null)
+            .With(t => t.AssignedModeratorId, (string?)null)
             .Create();
 
         _repositoryMock
