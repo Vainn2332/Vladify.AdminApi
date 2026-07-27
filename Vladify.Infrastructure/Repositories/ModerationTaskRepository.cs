@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Polly;
 using Polly.Registry;
 using Vladify.Application.Interfaces;
-using Vladify.Application.Models;
 using Vladify.Domain.Entities;
 using Vladify.Infrastructure.Constants;
 
@@ -22,26 +21,33 @@ public class ModerationTaskRepository(ApplicationDbContext context, ResiliencePi
         return task;
     }
 
-    public async Task<List<ModerationTask>> GetAllAsync(PaginationFilter paginationFilter, CancellationToken cancellationToken)
+    public async Task<Guid?> ClaimNextPendingTaskAsync(Guid moderatorId, CancellationToken cancellationToken)
     {
         return await _pipeline.ExecuteAsync(async pollyCancellationToken =>
         {
             var connection = context.Database.GetDbConnection();
 
             var query = """
-                SELECT * FROM "ModerationTasks"
-                ORDER BY "Id"
-                LIMIT @Limit OFFSET @Offset
-                """;
+            UPDATE "ModerationTasks"
+            SET "AssignedModeratorId" = @ModeratorId
+            WHERE "Id" = (
+                SELECT "Id" 
+                FROM "ModerationTasks" 
+                WHERE "AssignedModeratorId" IS NULL AND "Status" = 'Pending' 
+                ORDER BY "CreatedAt" ASC 
+                LIMIT 1 
+                FOR UPDATE SKIP LOCKED
+            )
+            RETURNING "Id"
+            """;
 
             var command = new CommandDefinition(
                 query,
-                new { Limit = paginationFilter.PageSize, Offset = paginationFilter.Offset },
+                new { ModeratorId = moderatorId },
                 cancellationToken: pollyCancellationToken);
 
-            var result = await connection.QueryAsync<ModerationTask>(command);
+            return await connection.QueryFirstOrDefaultAsync<Guid?>(command);
 
-            return result.AsList();
         }, cancellationToken);
     }
 
@@ -84,6 +90,29 @@ public class ModerationTaskRepository(ApplicationDbContext context, ResiliencePi
             context.ModerationTasks.Remove(task);
 
             await context.SaveChangesAsync(pollyCancellationToken);
+        }, cancellationToken);
+    }
+
+    public async Task<bool> HasActiveTaskAsync(Guid moderatorId, CancellationToken cancellationToken)
+    {
+        return await _pipeline.ExecuteAsync(async pollyCancellationToken =>
+        {
+            var connection = context.Database.GetDbConnection();
+
+            var query = """
+                SELECT EXISTS (
+                SELECT 1 
+                FROM "ModerationTasks" 
+                WHERE "AssignedModeratorId" = @ModeratorId );
+            """;
+
+            var command = new CommandDefinition(
+                query,
+                new { ModeratorId = moderatorId },
+                cancellationToken: pollyCancellationToken);
+
+            return await connection.QueryFirstOrDefaultAsync<bool>(command);
+
         }, cancellationToken);
     }
 }
