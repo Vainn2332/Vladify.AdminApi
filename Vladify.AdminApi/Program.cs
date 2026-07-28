@@ -20,6 +20,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.ConfigureGrpcServices();
+
 app.UseAuthorization();
 
 app.MapControllers();

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Vladify.AdminApi.Constants;
+using Vladify.AdminApi.Grpc.ModerationTask;
 using Vladify.Application.Constants;
 using Vladify.Application.Options;
 
@@ -13,9 +14,13 @@ public static class ApiExtensions
     {
         public IServiceCollection AddApiServices()
         {
-            return services
+            services
                 .AddJwtBasedAuthentication()
                 .AddPolicyBasedAuthorization();
+
+            services.AddGrpc();
+
+            return services;
         }
 
         public IServiceCollection AddJwtBasedAuthentication()
@@ -54,6 +59,16 @@ public static class ApiExtensions
             });
 
             return services;
+        }
+    }
+
+    extension(IEndpointRouteBuilder app)
+    {
+        public IEndpointRouteBuilder ConfigureGrpcServices()
+        {
+            app.MapGrpcService<ModerationGrpcService>();
+
+            return app;
         }
     }
 }
