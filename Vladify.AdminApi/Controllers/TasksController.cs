@@ -18,6 +18,7 @@ namespace Vladify.AdminApi.Controllers
         public Task<Guid?> AsssignTask()
         {
             var moderatorId = User.GetAuth0Id();
+
             var command = new AssignTaskCommand(moderatorId);
 
             return mediator.Send(command);
@@ -34,11 +35,11 @@ namespace Vladify.AdminApi.Controllers
         }
 
         [HttpPut("{id}/reject")]
-        public Task<RejectedTaskResponse> Reject(Guid id)
+        public Task<RejectedTaskResponse> Reject(Guid id, string rejactionReason)
         {
             var moderatorId = User.GetAuth0Id();
 
-            var command = new RejectTaskCommand(id, moderatorId);
+            var command = new RejectTaskCommand(id, moderatorId, rejactionReason);
 
             return mediator.Send(command);
         }
