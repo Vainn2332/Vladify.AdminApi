@@ -50,14 +50,12 @@ public static class ApiExtensions
         {
 
             var auth0Options = configuration.GetSection(Auth0Options.SectionName).Get<Auth0Options>()
-                ?? throw new NotFoundException($"Configuration section{Auth0Options.SectionName} not found!");
+                ?? throw new NotFoundException($"Configuration section {Auth0Options.SectionName} not found!");
 
             services.AddOpenApi(options =>
             {
                 options.AddDocumentTransformer((document, context, cancellationToken) =>
                 {
-                    var domain = auth0Options.Domain;
-
                     var securityScheme = new OpenApiSecurityScheme
                     {
                         Type = SecuritySchemeType.OAuth2,
@@ -78,7 +76,11 @@ public static class ApiExtensions
                     };
 
                     document.Components ??= new OpenApiComponents();
-                    document.Components.SecuritySchemes!.Add("Auth0", securityScheme);
+                    document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
+
+                    document.Components.SecuritySchemes!.Add("Bearer", securityScheme);
+
+
 
                     return Task.CompletedTask;
                 });
