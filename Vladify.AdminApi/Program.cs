@@ -15,16 +15,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/openapi/v1.json", "Vladify API v1");
-
-        var clientId = builder.Configuration["Auth0Options:ClientId"];
-
-        options.OAuthClientId(clientId);
-
-        options.OAuthUsePkce();
-    });
+    app.MapScalar(builder.Configuration);
 }
 
 app.UseHttpsRedirection();

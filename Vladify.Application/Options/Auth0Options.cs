@@ -19,5 +19,5 @@ public class Auth0Options
     public required string Audience { get; set; }
 
     public string TokenUrl => $"https://{Domain}/oauth/token";
-    public string AuthorizationUrl => $"https://{Domain}/authorize";
+    public string AuthorizationUrl => $"https://{Domain}/authorize?audience={Audience}";
 }

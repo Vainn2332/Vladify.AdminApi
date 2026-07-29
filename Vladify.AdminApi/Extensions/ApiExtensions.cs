@@ -18,7 +18,7 @@ public static class ApiExtensions
             return services
                 .AddJwtBasedAuthentication()
                 .AddPolicyBasedAuthorization()
-                .AddSwagger(configuration);
+                .AddOpenApiDocumentation(configuration);
         }
 
         public IServiceCollection AddJwtBasedAuthentication()
@@ -46,11 +46,10 @@ public static class ApiExtensions
             return services;
         }
 
-        public IServiceCollection AddSwagger(IConfiguration configuration)
+        public IServiceCollection AddOpenApiDocumentation(IConfiguration configuration)
         {
-
             var auth0Options = configuration.GetSection(Auth0Options.SectionName).Get<Auth0Options>()
-                ?? throw new NotFoundException($"Configuration section {Auth0Options.SectionName} not found!");
+                ?? throw new NotFoundException($"Configuration section{Auth0Options.SectionName} not found!");
 
             services.AddOpenApi(options =>
             {
@@ -66,21 +65,18 @@ public static class ApiExtensions
                                 AuthorizationUrl = new Uri(auth0Options.AuthorizationUrl),
                                 TokenUrl = new Uri(auth0Options.TokenUrl),
                                 Scopes = new Dictionary<string, string>
-                                {
-                                    { "openid", "OpenID" },
-                                    { "profile", "Profile" },
-                                    { "email", "Email" }
-                                }
+                            {
+                                { "openid", "OpenID" },
+                                { "profile", "Profile" },
+                                { "email", "Email" }
+                            }
                             }
                         }
                     };
 
                     document.Components ??= new OpenApiComponents();
                     document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
-
-                    document.Components.SecuritySchemes!.Add("Bearer", securityScheme);
-
-
+                    document.Components.SecuritySchemes.Add(JwtBearerDefaults.AuthenticationScheme, securityScheme);
 
                     return Task.CompletedTask;
                 });
