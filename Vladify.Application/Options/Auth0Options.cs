@@ -10,6 +10,9 @@ public class Auth0Options
     public required string Domain { get; set; }
 
     [Required]
+    public required string ClientId { get; set; }
+
+    [Required]
     public required string Authority { get; set; }
 
     [Required]
