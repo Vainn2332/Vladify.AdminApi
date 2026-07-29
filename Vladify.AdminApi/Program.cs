@@ -7,7 +7,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
 
-builder.Services.AddApiServices();
+builder.Services.AddApiServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.ConfigureInfrastructure();
 
@@ -20,10 +20,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/openapi/v1.json", "Vladify API v1");
+
+        var clientId = builder.Configuration["Auth0Options:ClientId"];
+
+        options.OAuthClientId(clientId);
+
+        options.OAuthUsePkce();
     });
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
