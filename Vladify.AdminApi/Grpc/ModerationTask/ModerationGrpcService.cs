@@ -9,7 +9,10 @@ public class ModerationGrpcService(IMediator mediator) : ModerationGrpc.Moderati
 {
     public async override Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, ServerCallContext context)
     {
-        var songId = Guid.Parse(request.SongId);
+        if (!Guid.TryParse(request.SongId, out var songId))
+        {
+            throw new ArgumentException("Invalid guid!");
+        }
         var command = new CreateTaskCommand(songId);
 
         var response = await mediator.Send(command, context.CancellationToken);
