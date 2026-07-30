@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using Vladify.AdminApi.Constants;
 using Vladify.AdminApi.Grpc.ModerationTask;
 using Vladify.Application.Constants;
+using Vladify.Application.Exceptions;
 using Vladify.Application.Options;
 
 namespace Vladify.AdminApi.Extensions;
@@ -12,11 +14,12 @@ public static class ApiExtensions
 {
     extension(IServiceCollection services)
     {
-        public IServiceCollection AddApiServices()
+        public IServiceCollection AddApiServices(IConfiguration configuration)
         {
             services
                 .AddJwtBasedAuthentication()
-                .AddPolicyBasedAuthorization();
+                .AddPolicyBasedAuthorization()
+                .AddOpenApiDocumentation(configuration);
 
             services.AddGrpc();
 
@@ -43,6 +46,45 @@ public static class ApiExtensions
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true
                 };
+            });
+
+            return services;
+        }
+
+        public IServiceCollection AddOpenApiDocumentation(IConfiguration configuration)
+        {
+            var auth0Options = configuration.GetSection(Auth0Options.SectionName).Get<Auth0Options>()
+                ?? throw new NotFoundException($"Configuration section{Auth0Options.SectionName} not found!");
+
+            services.AddOpenApi(options =>
+            {
+                options.AddDocumentTransformer((document, context, cancellationToken) =>
+                {
+                    var securityScheme = new OpenApiSecurityScheme
+                    {
+                        Type = SecuritySchemeType.OAuth2,
+                        Flows = new OpenApiOAuthFlows
+                        {
+                            AuthorizationCode = new OpenApiOAuthFlow
+                            {
+                                AuthorizationUrl = new Uri(auth0Options.AuthorizationUrl),
+                                TokenUrl = new Uri(auth0Options.TokenUrl),
+                                Scopes = new Dictionary<string, string>
+                            {
+                                { "openid", "OpenID" },
+                                { "profile", "Profile" },
+                                { "email", "Email" }
+                            }
+                            }
+                        }
+                    };
+
+                    document.Components ??= new OpenApiComponents();
+                    document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
+                    document.Components.SecuritySchemes.Add(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+
+                    return Task.CompletedTask;
+                });
             });
 
             return services;
