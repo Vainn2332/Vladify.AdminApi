@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Scalar.AspNetCore;
+using Vladify.AdminApi.Grpc.ModerationTask;
 using Vladify.Application.Options;
 
 namespace Vladify.AdminApi.Extensions;
@@ -24,6 +25,13 @@ public static class EndpointRouteBuilderExtensions
                         flow.AddQueryParameter("audience", auth0Options.Audience);
                     });
             });
+
+            return endpointRouteBuilder;
+        }
+
+        public IEndpointRouteBuilder ConfigureGrpcServices()
+        {
+            endpointRouteBuilder.MapGrpcService<ModerationGrpcService>();
 
             return endpointRouteBuilder;
         }

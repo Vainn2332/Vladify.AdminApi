@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Vladify.AdminApi.Constants;
-using Vladify.AdminApi.Grpc.ModerationTask;
+using Vladify.AdminApi.Grpc.Interceptors;
 using Vladify.Application.Constants;
 using Vladify.Application.Exceptions;
 using Vladify.Application.Options;
@@ -102,15 +102,15 @@ public static class ApiExtensions
 
             return services;
         }
-    }
 
-    extension(IEndpointRouteBuilder app)
-    {
-        public IEndpointRouteBuilder ConfigureGrpcServices()
+        public IServiceCollection AddGrpcDependencies()
         {
-            app.MapGrpcService<ModerationGrpcService>();
+            services.AddGrpc(options =>
+            {
+                options.Interceptors.Add<GrpcExceptionInterceptor>();
+            });
 
-            return app;
+            return services;
         }
     }
 }
