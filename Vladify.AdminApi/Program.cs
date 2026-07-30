@@ -18,8 +18,6 @@ if (app.Environment.IsDevelopment())
     app.MapScalar(builder.Configuration);
 }
 
-app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
