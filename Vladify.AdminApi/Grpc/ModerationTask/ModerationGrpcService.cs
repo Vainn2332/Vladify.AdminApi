@@ -11,7 +11,7 @@ public class ModerationGrpcService(IMediator mediator) : ModerationGrpc.Moderati
     {
         if (!Guid.TryParse(request.SongId, out var songId))
         {
-            throw new ArgumentException("Invalid guid!");
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid guid!"));
         }
         var command = new CreateTaskCommand(songId);
 
