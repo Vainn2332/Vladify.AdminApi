@@ -1,6 +1,5 @@
 <Solution>
   <Folder Name="/Solution Items/">
-    <File Path=".dockerfile" />
     <File Path=".github/workflows/ci.yml" />
   </Folder>
   <Project Path="Vladify.AdminApi/Vladify.AdminApi.csproj" />
