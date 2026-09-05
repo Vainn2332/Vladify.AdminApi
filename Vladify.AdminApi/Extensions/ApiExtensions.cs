@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Vladify.AdminApi.Constants;
+using Vladify.AdminApi.Grpc.Interceptors;
 using Vladify.Application.Constants;
 using Vladify.Application.Exceptions;
 using Vladify.Application.Options;
@@ -15,10 +16,14 @@ public static class ApiExtensions
     {
         public IServiceCollection AddApiServices(IConfiguration configuration)
         {
-            return services
+            services
                 .AddJwtBasedAuthentication()
                 .AddPolicyBasedAuthorization()
                 .AddOpenApiDocumentation(configuration);
+
+            services.AddGrpc();
+
+            return services;
         }
 
         public IServiceCollection AddJwtBasedAuthentication()
@@ -93,6 +98,16 @@ public static class ApiExtensions
                 {
                     policy.RequireClaim(JwtClaims.Roles, AppRoles.Admin, AppRoles.Moderator);
                 });
+            });
+
+            return services;
+        }
+
+        public IServiceCollection AddGrpcDependencies()
+        {
+            services.AddGrpc(options =>
+            {
+                options.Interceptors.Add<GrpcExceptionInterceptor>();
             });
 
             return services;

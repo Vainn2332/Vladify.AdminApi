@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Vladify.GrpcContracts"; 
+
+service ModerationGrpc {
+  rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse);
+}
+
+message CreateTaskRequest {
+  string song_id = 1;
+}
+
+message CreateTaskResponse {
+  string task_id = 1;
+}

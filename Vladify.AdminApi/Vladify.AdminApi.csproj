@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.80.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
@@ -19,6 +20,10 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.16.16" />
   </ItemGroup>
 
+  <ItemGroup>
+	<Protobuf Include="Grpc\ModerationTask\moderation.proto" GrpcServices="Server" />
+  </ItemGroup>
+	
   <ItemGroup>
     <ProjectReference Include="..\Vladify.Application\Vladify.Application.csproj" />
     <ProjectReference Include="..\Vladify.Infrastructure\Vladify.Infrastructure.csproj" />
