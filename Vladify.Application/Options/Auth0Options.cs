@@ -13,11 +13,9 @@ public class Auth0Options
     public required string ClientId { get; set; }
 
     [Required]
-    public required string Authority { get; set; }
-
-    [Required]
     public required string Audience { get; set; }
 
+    public string Authority => $"https://{Domain}";
     public string TokenUrl => $"https://{Domain}/oauth/token";
     public string AuthorizationUrl => $"https://{Domain}/authorize?audience={Audience}";
 }
