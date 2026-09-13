@@ -8,6 +8,7 @@
     <File Path=".env" />
     <File Path=".env.example" />
     <File Path=".gitignore" />
+    <File Path="compose.yml" />
   </Folder>
   <Project Path="Vladify.AdminApi/Vladify.AdminApi.csproj" />
   <Project Path="Vladify.Application/Vladify.Application.csproj" Id="91352d45-6799-492d-80cb-8366649844a4" />
