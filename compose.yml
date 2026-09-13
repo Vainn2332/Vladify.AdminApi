@@ -10,6 +10,8 @@ services:
       POSTGRES_PASSWORD: ${DbPassword}
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    networks:
+      - vladify-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DbUser} -d ${DbName}"]
       interval: 10s
@@ -28,9 +30,15 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       ConnectionStrings__AdminApiDb: "Host=postgres;Port=5432;Database=${DbName};Username=${DbUser};Password=${DbPassword}"
+    networks:
+      - vladify-network
     depends_on:
       postgres:
         condition: service_healthy
 
 volumes:
   postgres-data:
+
+networks:
+  vladify-network:
+    external: true
