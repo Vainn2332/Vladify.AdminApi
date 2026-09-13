@@ -1,5 +1,7 @@
-# Vladify.AdminApi
+﻿# Vladify.AdminApi
 
+
+![CI](https://github.com/Vainn2332/Vladify.AdminApi/actions/workflows/ci.yml/badge.svg)
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=Vainn2332_Vladify.AdminApi&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Vainn2332_Vladify.AdminApi)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Vainn2332_Vladify.AdminApi&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Vainn2332_Vladify.AdminApi)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Vainn2332_Vladify.AdminApi&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Vainn2332_Vladify.AdminApi)
@@ -123,6 +125,7 @@ Intended for service-to-service calls.
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - A PostgreSQL instance
 - An Auth0 tenant (for issuing/validating JWTs)
+- [Docker](https://www.docker.com/) & Docker Compose (for the containerized setup)
 
 ### 1. Configure environment
 
@@ -170,15 +173,37 @@ dotnet test
 
 ---
 
-## Running with Docker
+## Running with Docker Compose
 
-A Linux [`Dockerfile`](Vladify.AdminApi/Dockerfile) is provided (exposes port
-`8080`):
+This service ships a [`compose.yml`](compose.yml) that starts the API together
+with its own PostgreSQL container.
 
-```bash
-docker build -t vladify-adminapi -f Vladify.AdminApi/Dockerfile .
-docker run -p 8080:8080 --env-file .env vladify-adminapi
-```
+> [!IMPORTANT]
+> `compose.yml` attaches to a **shared external Docker network**
+> (`vladify-network`) so this microservice can reach the rest of the Vladify
+> platform. That network is **created by the main Vladify stack**, not by this
+> repository. You must start the main **Vladify** service (through its own
+> Compose) **first** — otherwise `docker compose up` here fails with:
+> `network vladify-network declared as external, but could not be found`.
+
+### Startup order
+
+1. **Start the main Vladify stack first.** Its Compose file creates the shared
+   `vladify-network` network.
+2. **Then start this microservice:**
+
+   ```bash
+   docker compose up -d 
+   ```
+
+Once running:
+
+- API — `http://localhost:8082` (host `8082` → container `8080`)
+- PostgreSQL — `localhost:5433` (host `5433` → container `5432`)
+
+The container reads `DbName`, `DbUser`, `DbPassword`, `ASPNETCORE_ENVIRONMENT`
+and the Auth0 settings from your `.env` file. When `ASPNETCORE_ENVIRONMENT` is
+`Development`, the Scalar docs are available at `http://localhost:8082/scalar`.
 
 ---
 
