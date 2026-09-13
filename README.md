@@ -5,6 +5,7 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Vainn2332_Vladify.AdminApi&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Vainn2332_Vladify.AdminApi)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Vainn2332_Vladify.AdminApi&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Vainn2332_Vladify.AdminApi)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Vainn2332_Vladify.AdminApi&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Vainn2332_Vladify.AdminApi)
+
 Admin & moderation service for the **Vladify** music platform. It manages the
 lifecycle of song *moderation tasks*: songs submitted for review are turned into
 tasks, moderators pull them off a queue one at a time, and then approve or reject
