@@ -1,5 +1,8 @@
+using Vladify.AdminApi.Config;
 using Vladify.AdminApi.Extensions;
 using Vladify.Application.Extensions;
+
+EnvLoader.LoadEnvVariables();
 
 var builder = WebApplication.CreateBuilder(args);
 
